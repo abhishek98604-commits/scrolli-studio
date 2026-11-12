@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'none'; form-action 'none'">
+<title>Scrolli Studio — guidelines &amp; templates</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html">Scrolli <span>Studio</span></a>
+  <nav><a href="index.html">Tester</a><a href="guidelines.html" aria-current="page">Guidelines &amp; templates</a></nav>
+</header>
+<main class="wrap doc">
+  <h1>How to make a Scrolli scroll</h1>
+  <p>A Scrolli scroll is one long strip of paper that a child rolls past a window, one scene at a time. Design it as a <strong>vertical strip: the start is at the top</strong>. Then test it in the <a href="index.html">tester</a>.</p>
+
+  <h2>1 · Pick a length</h2>
+  <table>
+    <tr><th></th><th>16 scenes</th><th>24 scenes</th></tr>
+    <tr><td>Paper length (with blank ends)</td><td>2,650 mm</td><td>3,850 mm</td></tr>
+    <tr><td>Artboard with bleed</td><td>127 × 2,656 mm</td><td>127 × 3,856 mm</td></tr>
+    <tr><td>Pixels for testing (150 dpi)</td><td>750 × 15,686 px</td><td>750 × 22,772 px</td></tr>
+    <tr><td>Pixels for print (300 dpi)</td><td>1,500 × 31,370 px</td><td>1,500 × 45,543 px</td></tr>
+    <tr><td>Story scenes</td><td>title + 14 + end</td><td>title + 22 + end</td></tr>
+  </table>
+
+  <h2>2 · The layout, top to bottom</h2>
+  <div class="figure">
+    <svg viewBox="0 0 220 420" role="img" aria-label="Scroll layout from top: blank lead, title scene, story scenes, end scene, blank lead">
+      <g font-family="system-ui,sans-serif" font-size="10" fill="currentColor">
+        <rect x="40" y="10" width="80" height="50" fill="#eee" stroke="currentColor"/><text x="130" y="32">Blank lead 125 mm</text><text x="130" y="45" opacity=".7">glued to the dowel</text>
+        <rect x="40" y="60" width="80" height="60" fill="#ffe0bf" stroke="currentColor"/><text x="130" y="88">01 · Title</text><text x="130" y="101" opacity=".7">title + credits</text>
+        <rect x="40" y="120" width="80" height="60" fill="#fff" stroke="currentColor"/><text x="130" y="152">02 · scene</text>
+        <rect x="40" y="180" width="80" height="60" fill="#fff" stroke="currentColor"/><text x="130" y="212">03 · scene</text>
+        <text x="80" y="262" text-anchor="middle">⋮</text>
+        <rect x="40" y="270" width="80" height="60" fill="#ffe0bf" stroke="currentColor"/><text x="130" y="298">16 or 24 · End</text><text x="130" y="311" opacity=".7">ending + credits</text>
+        <rect x="40" y="330" width="80" height="50" fill="#eee" stroke="currentColor"/><text x="130" y="358">Blank lead 125 mm</text>
+        <rect x="44" y="124" width="72" height="52" fill="none" stroke="#2fae6b" stroke-dasharray="3 2"/>
+      </g>
+    </svg>
+    <ul>
+      <li><strong>Each scene is 121 × 150 mm.</strong> That's exactly one window view.</li>
+      <li><strong>Safe zone:</strong> keep words, faces and anything important at least <strong>8 mm</strong> inside each scene (the green box, 104 × 134 mm). The window has rounded corners.</li>
+      <li><strong>Bleed:</strong> extend backgrounds 3 mm past the left and right edges.</li>
+      <li><strong>Blank leads:</strong> the first and last 125 mm wrap around the dowels. Keep them empty: plain paper or a soft colour, no art.</li>
+      <li>Art <strong>can flow across scene lines</strong>. A continuous picture feels magical when it rolls. Just keep text inside one scene.</li>
+    </ul>
+  </div>
+
+  <h2>3 · Templates</h2>
+  <div class="dl">
+    <a href="templates/Scrolli_template_16_scenes.svg" download>16 scenes · SVG<small>Illustrator, Affinity, Inkscape, Figma</small></a>
+    <a href="templates/Scrolli_template_16_scenes.pdf" download>16 scenes · PDF<small>full size, with guides</small></a>
+    <a href="templates/Scrolli_template_16_scenes_150dpi.png" download>16 scenes · PNG 150 dpi<small>Procreate, Photoshop</small></a>
+    <a href="templates/Scrolli_template_24_scenes.svg" download>24 scenes · SVG</a>
+    <a href="templates/Scrolli_template_24_scenes.pdf" download>24 scenes · PDF</a>
+    <a href="templates/Scrolli_template_24_scenes_150dpi.png" download>24 scenes · PNG 150 dpi</a>
+  </div>
+  <p>Put your art on the <em>ARTWORK</em> layer and hide <em>GUIDES</em> before you export.</p>
+
+  <h2>4 · Two ways to test</h2>
+  <ul>
+    <li><strong>One long image:</strong> export the whole strip as PNG or JPG at 150 dpi (750 px wide).</li>
+    <li><strong>Scene by scene</strong> (easier on phones and tablets): export each scene as its own image, 121 × 150 mm (715 × 886 px at 150 dpi), named <code>01.png</code>, <code>02.png</code> … in reading order.</li>
+  </ul>
+  <p class="note">Everything you load into the tester stays on your device. Nothing is uploaded or stored, and closing the tab clears it.</p>
+
+  <h2>5 · Writing for a scroll</h2>
+  <ul>
+    <li><strong>One idea per scroll.</strong> Journeys, parades, chases, things that grow or change, and timelines all work well, because the reader always moves forward.</li>
+    <li><strong>End each scene with a hook:</strong> something peeking in from the bottom edge so the child wants to turn the dial.</li>
+    <li><strong>Words per scene:</strong> ages 3–5 up to 15 · 6–8 up to 25 · 9–12 up to 40.</li>
+    <li><strong>Rhythm:</strong> set up (first scenes), build with a surprise every 3–4 scenes, the big moment near the end, then a calm close.</li>
+    <li>Leave one or two <strong>wordless scenes</strong> for the child to tell the story.</li>
+    <li><strong>Scene 1</strong> = title, author and illustrator. <strong>Last scene</strong> = ending, credits and one question to talk about.</li>
+  </ul>
+
+  <h2>6 · Text and type</h2>
+  <ul>
+    <li>Main reading text at least <strong>14 pt</strong> (about 5 mm cap height); headings as big as you like.</li>
+    <li>Use fonts whose licence allows <strong>commercial printing</strong> (for example Google Fonts / SIL OFL). Convert text to outlines in the print file.</li>
+    <li>Strong contrast between text and background.</li>
+  </ul>
+
+  <h2>7 · Before you hand in for print</h2>
+  <ul>
+    <li>300 dpi, 127 mm wide including bleed, RGB or the printer's CMYK profile.</li>
+    <li>Everything important inside the safe zones; blank leads clean.</li>
+    <li>Rolled it all the way through in the tester: no text cut by the window corners.</li>
+    <li>Your own original work, or licensed images and fonts.</li>
+  </ul>
+</main>
+<footer class="foot">Scrolli Studio · <a href="index.html">back to the tester</a></footer>
+</body>
+</html>

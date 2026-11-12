@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Privacy: this page may not send anything anywhere. Files you pick stay in this browser tab. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'none'; form-action 'none'">
+<title>Scrolli Studio — scroll tester</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html">Scrolli <span>Studio</span></a>
+  <nav><a href="index.html" aria-current="page">Tester</a><a href="guidelines.html">Guidelines &amp; templates</a></nav>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <h1>Test your scroll</h1>
+    <p>Pick your file and roll it through the Scrolli window. <strong>Your files never leave this device</strong>: nothing is uploaded or saved, and closing the tab clears it.</p>
+  </section>
+
+  <div class="layout">
+    <aside class="panel" aria-label="Setup">
+      <div class="group">
+        <h2>1 · Length</h2>
+        <div class="seg" role="radiogroup" aria-label="Number of scenes">
+          <button type="button" role="radio" aria-checked="true" data-scenes="16">16 scenes<small>2.65 m</small></button>
+          <button type="button" role="radio" aria-checked="false" data-scenes="24">24 scenes<small>3.85 m</small></button>
+        </div>
+      </div>
+      <div class="group">
+        <h2>2 · Your file</h2>
+        <div class="seg small" role="radiogroup" aria-label="Upload type">
+          <button type="button" role="radio" aria-checked="true" data-mode="strip">One long image</button>
+          <button type="button" role="radio" aria-checked="false" data-mode="scenes">Scene by scene</button>
+        </div>
+        <label class="drop" id="drop">
+          <input type="file" id="file" accept="image/png,image/jpeg,image/webp">
+          <span id="dropText">Drop your vertical scroll image here, or tap to choose</span>
+        </label>
+        <button type="button" class="link" id="demo">No file yet? Try a demo scroll</button>
+      </div>
+      <div class="group" id="checks" hidden>
+        <h2>3 · File check</h2>
+        <ul class="checks" id="checkList"></ul>
+      </div>
+      <div class="group">
+        <h2>View</h2>
+        <label class="tog"><input type="checkbox" id="guides"> Show scene lines &amp; safe zone</label>
+        <label class="tog"><input type="checkbox" id="clicks" checked> Dial clicks (15° steps)</label>
+      </div>
+    </aside>
+
+    <section class="stage" aria-label="Scroll viewer">
+      <div class="viewer" id="viewer">
+        <canvas id="cv" aria-label="Scrolli box wireframe with your scroll in the window"></canvas>
+      </div>
+      <div class="controls">
+        <button type="button" class="btn" id="prev" aria-label="Previous scene">▲ Prev</button>
+        <span class="counter" id="counter" aria-live="polite">Scene – / 16</span>
+        <button type="button" class="btn" id="next" aria-label="Next scene">Next ▼</button>
+      </div>
+      <p class="hint">Drag the paper or a dial · mouse wheel · ↑ ↓ keys</p>
+    </section>
+
+    <aside class="panel flat" aria-label="Whole scroll">
+      <h2>Whole scroll</h2>
+      <div class="strip" id="stripBox"><canvas id="strip"></canvas></div>
+      <p class="small">Tap anywhere on the strip to jump there.</p>
+    </aside>
+  </div>
+</main>
+<footer class="foot">Scrolli Studio · files stay on your device · <a href="guidelines.html">format guidelines</a></footer>
+<script src="app.js"></script>
+</body>
+</html>
