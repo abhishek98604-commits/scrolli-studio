@@ -8,11 +8,8 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top">
-  <a class="brand" href="index.html">Scrolli <span>Studio</span></a>
-  <nav><a href="index.html">Tester</a><a href="guidelines.html" aria-current="page">Guidelines &amp; templates</a></nav>
-</header>
-<main class="wrap doc">
+<main class="doc">
+  <div class="topnav"><a class="home" href="index.html">← Scrolli Studio</a></div>
   <h1>How to make a Scrolli scroll</h1>
   <p>A Scrolli scroll is one long strip of paper that a child rolls past a window, one scene at a time. Design it as a <strong>vertical strip: the start is at the top</strong>. Then test it in the <a href="index.html">tester</a>.</p>
 
@@ -76,6 +73,21 @@
     <li><strong>Save words file</strong> keeps your layout (nothing is stored online). Send that file plus your font files with your art for print.</li>
   </ul>
 
+  <h2>Loading all the words at once (script file)</h2>
+  <p>In <strong>Add words</strong>, use <em>Load script (.md)</em>. Every scene's words are placed automatically in the calmer part of the picture, in dark or light text to suit the background. Then just adjust. Two formats work:</p>
+<pre>| # | Story words | Small label |
+|---|---|---|
+| 1 | Sam and the Sea Beneath | a Scrolli story |
+| 2 | Sam is relaxing on his little boat… | the surface · 0 m |</pre>
+<p>or</p>
+<pre>## Scene 1
+Sam and the Sea Beneath
+label: a Scrolli story
+
+## Scene 2
+Sam is relaxing on his little boat…
+label: the surface · 0 m</pre>
+
   <h2>5 · Writing for a scroll</h2>
   <ul>
     <li><strong>One idea per scroll.</strong> Journeys, parades, chases, things that grow or change, and timelines all work well, because the reader always moves forward.</li>
@@ -101,6 +113,6 @@
     <li>Your own original work, or licensed images and fonts.</li>
   </ul>
 </main>
-<footer class="foot">Scrolli Studio · <a href="index.html">back to the tester</a></footer>
+<footer class="legal static">© 2026 Scrolli. All rights reserved. No part of this tool, its templates or its designs may be reproduced, copied or distributed without written permission. Files you load are processed only in your browser and are never uploaded or stored.</footer>
 </body>
 </html>

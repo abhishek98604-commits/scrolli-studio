@@ -3,97 +3,105 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Privacy: this page may not send anything anywhere. Files you pick stay in this browser tab. -->
+<!-- Privacy: this page cannot send anything anywhere. Files you pick stay in this browser tab. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'none'; form-action 'none'; font-src 'self' blob: data:">
-<title>Scrolli Studio — scroll tester</title>
+<title>Scrolli Studio</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top">
-  <a class="brand" href="index.html">Scrolli <span>Studio</span></a>
-  <nav><a href="index.html" aria-current="page">Tester</a><a href="guidelines.html">Guidelines &amp; templates</a></nav>
-</header>
+<div class="app">
 
-<main class="wrap">
-  <section class="intro">
-    <h1>Test your scroll</h1>
-    <p>Pick your file and roll it through the Scrolli window. <strong>Your files never leave this device</strong>: nothing is uploaded or saved, and closing the tab clears it.</p>
-  </section>
+  <!-- ===== LEFT SIDEBAR ===== -->
+  <aside class="side" aria-label="Tools">
+    <div class="brand"><span class="logo">S</span><div><b>Scrolli Studio</b><small>Files never leave your device</small></div></div>
 
-  <div class="layout">
-    <aside class="panel" aria-label="Setup">
-      <div class="group">
-        <h2>1 · Length</h2>
+    <div class="tabs" role="tablist" aria-label="Mode">
+      <button type="button" role="tab" aria-selected="true" id="viewRoll">◎ Roll it</button>
+      <button type="button" role="tab" aria-selected="false" id="viewWords">T Add words</button>
+    </div>
+
+    <div class="sidescroll">
+      <!-- shared -->
+      <section class="card" data-show="both">
+        <h3>Length</h3>
         <div class="seg" role="radiogroup" aria-label="Number of scenes">
-          <button type="button" role="radio" aria-checked="true" data-scenes="16">16 scenes<small>2.65 m</small></button>
-          <button type="button" role="radio" aria-checked="false" data-scenes="24">24 scenes<small>3.85 m</small></button>
+          <button type="button" role="radio" aria-checked="true" data-scenes="16">16 scenes</button>
+          <button type="button" role="radio" aria-checked="false" data-scenes="24">24 scenes</button>
         </div>
-      </div>
-      <div class="group">
-        <h2>2 · Your file</h2>
-        <div class="seg small" role="radiogroup" aria-label="Upload type">
+      </section>
+
+      <section class="card" data-show="both">
+        <h3>Scroll</h3>
+        <div class="current"><span id="fileName">Demo scroll</span><button type="button" class="link" id="remove">Remove</button></div>
+        <label class="btn primary file" id="drop">
+          <input type="file" id="file" accept="image/png,image/jpeg,image/webp">
+          <span id="dropText">⤒ Upload scroll image</span>
+        </label>
+        <div class="seg mini" role="radiogroup" aria-label="Upload type">
           <button type="button" role="radio" aria-checked="true" data-mode="strip">One long image</button>
           <button type="button" role="radio" aria-checked="false" data-mode="scenes">Scene by scene</button>
         </div>
-        <label class="drop" id="drop">
-          <input type="file" id="file" accept="image/png,image/jpeg,image/webp">
-          <span id="dropText">Drop your vertical scroll image here, or tap to choose</span>
-        </label>
-        <button type="button" class="link" id="demo">No file yet? Try a demo scroll</button>
-      </div>
-      <div class="group" id="checks" hidden>
-        <h2>3 · File check</h2>
         <ul class="checks" id="checkList"></ul>
-      </div>
-      <div class="group" id="wordsPanel" hidden>
-        <h2>4 · Words</h2>
+      </section>
+
+      <!-- words tools -->
+      <section class="card" data-show="words">
+        <h3>Words</h3>
+        <button type="button" class="btn primary" id="wAdd">+ Add words</button>
+        <label class="btn file">Load script (.md)<input type="file" id="wScript" accept=".md,.txt,.markdown"></label>
         <div id="wControls" class="wctl">
-          <button type="button" class="btn full" id="wAdd">+ Add words to this scene</button>
-          <label class="lbl">Text<textarea id="wText" rows="3" data-need placeholder="Select or add a text box"></textarea></label>
-          <label class="lbl">Font<select id="wFont" data-need></select></label>
-          <label class="btn file small">Add your font file (.ttf .otf .woff)<input type="file" id="wFontFile" accept=".ttf,.otf,.woff,.woff2" multiple></label>
-          <label class="lbl">Size <span class="row"><input type="range" id="wSize" min="6" max="120" step="1" data-need><input type="number" id="wSizeN" min="6" max="200" data-need> pt</span></label>
-          <label class="lbl">Line spacing<input type="range" id="wLh" min="0.8" max="2" step="0.05" data-need></label>
-          <div class="row"><label class="lbl inline">Colour <input type="color" id="wColor" data-need></label><label class="tog"><input type="checkbox" id="wBold" data-need> Bold</label></div>
-          <div class="row align" role="group" aria-label="Align"><button type="button" class="btn" data-align="left" data-need>Left</button><button type="button" class="btn" data-align="center" data-need>Centre</button><button type="button" class="btn" data-align="right" data-need>Right</button></div>
-          <div class="row"><button type="button" class="btn" id="wAll" data-need>Use this style for all words</button><button type="button" class="btn danger" id="wDel" data-need>Delete</button></div>
-          <hr>
-          <div class="row"><button type="button" class="btn" id="wSave">Save words file</button><label class="btn file">Open words file<input type="file" id="wLoad" accept=".json"></label></div>
-          <button type="button" class="btn full" id="wPng">Download preview PNG with words</button>
-          <p class="small">Words and fonts stay on this device. Save the words file to keep your work (and send it to us with your font files for print).</p>
+          <textarea id="wText" rows="2" data-need placeholder="Select words on the scroll (double-click to type there)"></textarea>
+          <div class="row"><select id="wFont" data-need aria-label="Font"></select><label class="btn file icon" title="Add your font file">+ Font<input type="file" id="wFontFile" accept=".ttf,.otf,.woff,.woff2" multiple></label></div>
+          <div class="row"><span class="lab">Size</span><input type="range" id="wSize" min="6" max="120" step="1" data-need><input type="number" id="wSizeN" min="6" max="200" data-need aria-label="Size in pt"><span class="unit">pt</span></div>
+          <div class="row"><span class="lab">Lines</span><input type="range" id="wLh" min="0.8" max="2" step="0.05" data-need aria-label="Line spacing"></div>
+          <div class="row swatches" id="swatches"><input type="color" id="wColor" data-need aria-label="Custom colour"></div>
+          <div class="row">
+            <button type="button" class="btn sq" data-align="left" data-need title="Align left">⟸</button>
+            <button type="button" class="btn sq" data-align="center" data-need title="Centre">≡</button>
+            <button type="button" class="btn sq" data-align="right" data-need title="Align right">⟹</button>
+            <label class="tog"><input type="checkbox" id="wBold" data-need> Bold</label>
+          </div>
+          <div class="row"><button type="button" class="btn" id="wAll" data-need>Style → all</button><button type="button" class="btn danger" id="wDel" data-need>Delete</button></div>
         </div>
-      </div>
-      <div class="group">
-        <h2>View</h2>
-        <label class="tog"><input type="checkbox" id="guides"> Show scene lines &amp; safe zone</label>
-        <label class="tog"><input type="checkbox" id="clicks" checked> Dial clicks (15° steps)</label>
-      </div>
-    </aside>
+        <div class="row"><button type="button" class="btn" id="wSave">Save words</button><label class="btn file">Open words<input type="file" id="wLoad" accept=".json"></label></div>
+        <p class="tiny">Right-click the scroll for a quick menu. Double-click words to type in place.</p>
+      </section>
 
-    <section class="stage" aria-label="Scroll viewer">
-      <div class="seg viewtabs" role="radiogroup" aria-label="View">
-        <button type="button" role="radio" aria-checked="true" data-view="roll" id="viewRoll">Roll it</button>
-        <button type="button" role="radio" aria-checked="false" data-view="words" id="viewWords">Add words</button>
-      </div>
-      <div class="viewer" id="viewer">
-        <canvas id="cv" aria-label="Scrolli box wireframe with your scroll in the window"></canvas>
-      </div>
-      <div class="controls">
-        <button type="button" class="btn" id="prev" aria-label="Previous scene">▲ Prev</button>
-        <span class="counter" id="counter" aria-live="polite">Scene – / 16</span>
-        <button type="button" class="btn" id="next" aria-label="Next scene">Next ▼</button>
-      </div>
-      <p class="hint" id="hintRoll">Drag the paper or a dial · mouse wheel · ↑ ↓ keys</p>
-    </section>
+      <section class="card" data-show="both">
+        <h3>View</h3>
+        <label class="tog"><input type="checkbox" id="guides"> Scene lines &amp; safe zone</label>
+        <label class="tog" data-show="roll"><input type="checkbox" id="clicks" checked> Dial clicks (15°)</label>
+      </section>
+    </div>
 
-    <aside class="panel flat" aria-label="Whole scroll">
-      <h2>Whole scroll</h2>
-      <div class="strip" id="stripBox"><canvas id="strip"></canvas></div>
-      <p class="small">Tap anywhere on the strip to jump there.</p>
-    </aside>
-  </div>
-</main>
-<footer class="foot">Scrolli Studio · files stay on your device · <a href="guidelines.html">format guidelines</a></footer>
+    <nav class="sidefoot"><a href="guidelines.html">Guidelines &amp; templates</a></nav>
+  </aside>
+
+  <!-- ===== CANVAS ===== -->
+  <main class="stage" aria-label="Scroll viewer">
+    <div class="toolbar" role="toolbar" aria-label="Navigate">
+      <button type="button" class="tb" id="prev" title="Previous scene (Page Up)">▲</button>
+      <span class="counter" id="counter" aria-live="polite">Scene 1 / 16</span>
+      <button type="button" class="tb" id="next" title="Next scene (Page Down)">▼</button>
+      <span class="sep"></span>
+      <button type="button" class="tb" id="tbGuides" title="Scene lines &amp; safe zone">▦</button>
+      <button type="button" class="tb wide" id="wPng" title="Download a preview PNG of the whole scroll">⤓ PNG</button>
+    </div>
+    <div class="viewer" id="viewer">
+      <canvas id="cv" aria-label="Scroll viewer"></canvas>
+      <textarea id="inline" class="inline" hidden aria-label="Edit words"></textarea>
+    </div>
+    <p class="pill" id="hint">Drag or scroll to roll · ↑ ↓ keys</p>
+    <div class="menu" id="menu" role="menu" hidden></div>
+  </main>
+
+  <!-- ===== WHOLE SCROLL ===== -->
+  <aside class="strippanel" aria-label="Whole scroll">
+    <h3>Whole scroll</h3>
+    <div class="strip" id="stripBox"><canvas id="strip"></canvas></div>
+  </aside>
+</div>
+<footer class="legal">© 2026 Scrolli. All rights reserved. No part of this tool, its templates or its designs may be reproduced, copied or distributed without written permission. Files you load are processed only in your browser and are never uploaded or stored.</footer>
 <script src="app.js"></script>
 </body>
 </html>
