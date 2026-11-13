@@ -13,6 +13,10 @@ const $ = id => document.getElementById(id);
 const cv = $('cv'), ctx = cv.getContext('2d'), strip = $('strip'), sctx = strip.getContext('2d');
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 let urls = [];
+// ---- words layer (all local)
+let view = 'roll', editScene = 1, texts = [], sel = null, nextId = 1, edrag = null, ek = 1, eox = 0, eoy = 0;
+const fontList = [{ name: 'Nunito', label: 'Nunito (default)' }];
+const PT = 0.3528;   // mm per point
 
 // ---- UI wiring
 document.querySelectorAll('[data-scenes]').forEach(b => b.addEventListener('click', () => {
@@ -33,10 +37,11 @@ const drop = $('drop');
 drop.addEventListener('drop', e => load([...e.dataTransfer.files]));
 $('demo').addEventListener('click', demo);
 $('guides').addEventListener('change', draw);
-$('prev').addEventListener('click', () => go(-1));
-$('next').addEventListener('click', () => go(1));
+$('prev').addEventListener('click', () => view === 'words' ? setScene(editScene - 1) : go(-1));
+$('next').addEventListener('click', () => view === 'words' ? setScene(editScene + 1) : go(1));
 window.addEventListener('keydown', e => {
-  if (e.target.closest('input,button')) return;
+  if (e.target.closest('input,button,textarea,select')) return;
+  if (view === 'words') { if ((e.key === 'Delete' || e.key === 'Backspace') && sel) { delSel(); e.preventDefault(); } return; }
   if (e.key === 'ArrowDown') { nudge(CLICK_MM); e.preventDefault(); }
   if (e.key === 'ArrowUp') { nudge(-CLICK_MM); e.preventDefault(); }
   if (e.key === 'PageDown' || e.key === ' ') { go(1); e.preventDefault(); }
@@ -130,11 +135,11 @@ function animateTo(t) {
   requestAnimationFrame(step);
 }
 let drag = null;
-cv.addEventListener('pointerdown', e => { target = null; drag = { y: e.clientY, s }; cv.setPointerCapture(e.pointerId); });
-cv.addEventListener('pointermove', e => { if (!drag) return; s = drag.s - (e.clientY - drag.y) / k; clampS(); draw(); });
-cv.addEventListener('pointerup', () => { drag = null; snap(); });
+cv.addEventListener('pointerdown', e => { if (view === 'words') return edDown(e); target = null; drag = { y: e.clientY, s }; cv.setPointerCapture(e.pointerId); });
+cv.addEventListener('pointermove', e => { if (view === 'words') return edMove(e); if (!drag) return; s = drag.s - (e.clientY - drag.y) / k; clampS(); draw(); });
+cv.addEventListener('pointerup', () => { if (view === 'words') { edrag = null; buildStrip(); return; } drag = null; snap(); });
 cv.addEventListener('pointercancel', () => { drag = null; });
-cv.addEventListener('wheel', e => { e.preventDefault(); nudge(Math.sign(e.deltaY) * CLICK_MM * Math.max(1, Math.round(Math.abs(e.deltaY) / 60))); }, { passive: false });
+cv.addEventListener('wheel', e => { e.preventDefault(); if (view === 'words') return; nudge(Math.sign(e.deltaY) * CLICK_MM * Math.max(1, Math.round(Math.abs(e.deltaY) / 60))); }, { passive: false });
 
 // ---- drawing helpers (box coordinates in mm, origin = box centre, y down)
 const X = x => cx + x * k, Y = y => cy + y * k;
@@ -147,6 +152,28 @@ function paperTo(g, x0, y0, w, mmTop, mmBot, scale) {
     const syA = sg.sy + (a - sg.top) / sg.h * sg.sh, syB = sg.sy + (b - sg.top) / sg.h * sg.sh;
     g.drawImage(sg.img, sg.sx, syA, sg.sw, syB - syA, x0, y0 + (a - mmTop) * scale, w, (b - a) * scale);
   }
+  drawTexts(g, x0, y0, mmTop, mmBot, scale, w);
+}
+function fontStr(t, px) { return `${t.bold ? 800 : 400} ${px}px "${t.font}", system-ui, sans-serif`; }
+function layout(g, t, scale) {   // wraps lines to the box width; returns lines + line height in px
+  const px = t.size * PT * scale; g.font = fontStr(t, px); const maxW = t.w * scale, lines = [];
+  for (const para of t.text.split('\n')) { let cur = '';
+    for (const word of para.split(' ')) { const tr = cur ? cur + ' ' + word : word; if (g.measureText(tr).width <= maxW || !cur) cur = tr; else { lines.push(cur); cur = word; } }
+    lines.push(cur); }
+  return { lines, lh: px * t.lh, px };
+}
+function textBox(t) { const g = document.createElement('canvas').getContext('2d'); const L = layout(g, t, 10); return { x: t.x, y: t.y, w: t.w, h: L.lines.length * L.lh / 10 }; }
+function drawTexts(g, x0, y0, mmTop, mmBot, scale, w) {
+  if (!texts.length) return;
+  const pxPerMm = w / PAPER_W;
+  for (const t of texts) {
+    const top = LEAD + (t.scene - 1) * SCENE + t.y; const bb = textBox(t);
+    if (top > mmBot || top + bb.h < mmTop || t.scene > N) continue;
+    const L = layout(g, t, pxPerMm); g.save(); g.fillStyle = t.color; g.textBaseline = 'alphabetic';
+    g.textAlign = t.align; const ax = t.align === 'center' ? t.x + t.w / 2 : t.align === 'right' ? t.x + t.w : t.x;
+    L.lines.forEach((ln, i) => g.fillText(ln, x0 + ax * pxPerMm, y0 + (top - mmTop) * pxPerMm + L.px * 0.9 + i * L.lh));
+    g.restore();
+  }
 }
 
 // ---- main view
@@ -158,6 +185,7 @@ function resize() {
   buildStrip(); draw();
 }
 function draw() {
+  if (view === 'words') { drawEdit(); drawStripMarker(); return; }
   const r = cv.getBoundingClientRect(), wire = css('--wire') || '#222', acc = css('--accent') || '#e0761e', muted = css('--muted') || '#888';
   ctx.clearRect(0, 0, r.width, r.height);
   ctx.lineJoin = 'round'; ctx.lineCap = 'round';
@@ -167,7 +195,8 @@ function draw() {
   if (segs.length) paperTo(ctx, X(-PAPER_W / 2), Y(-WIN_H / 2), PAPER_W * k, s, s + WIN_H, k);
   else { ctx.fillStyle = '#fff'; ctx.fillRect(X(-WIN_W / 2), Y(-WIN_H / 2), WIN_W * k, WIN_H * k);
     ctx.fillStyle = muted; ctx.font = `600 ${Math.max(12, 5 * k)}px system-ui`; ctx.textAlign = 'center';
-    ctx.fillText('Your scroll shows here', X(0), Y(-4)); ctx.font = `${Math.max(11, 3.6 * k)}px system-ui`; ctx.fillText('choose a file or try the demo', X(0), Y(6)); }
+    ctx.fillText('Your scroll shows here', X(0), Y(-4)); ctx.font = `${Math.max(11, 3.6 * k)}px system-ui`; ctx.fillText('choose a file or try the demo', X(0), Y(6));
+    drawTexts(ctx, X(-PAPER_W / 2), Y(-WIN_H / 2), s, s + WIN_H, k, PAPER_W * k); }
   if ($('guides').checked) {
     for (let i = 0; i <= N; i++) {
       const yy = LEAD + i * SCENE - s - WIN_H / 2; if (yy < -WIN_H / 2 - 1 || yy > WIN_H / 2 + 1) continue;
@@ -207,11 +236,11 @@ function draw() {
     ctx.beginPath(); ctx.moveTo(X(sx > 0 ? BOX_W / 2 : -BOX_W / 2), Y(yc - 7)); ctx.lineTo(X(sx > 0 ? BOX_W / 2 + 1.5 : -BOX_W / 2 - 1.5), Y(yc - 7));
     ctx.moveTo(X(sx > 0 ? BOX_W / 2 : -BOX_W / 2), Y(yc + 7)); ctx.lineTo(X(sx > 0 ? BOX_W / 2 + 1.5 : -BOX_W / 2 - 1.5), Y(yc + 7)); ctx.stroke();
     ctx.lineWidth = Math.max(.6, lw * .55); ctx.globalAlpha = .7;
-    for (let i = 0; i < 24; i++) { const t = ang * sx + i * Math.PI / 12; if (Math.cos(t) <= 0) continue;
+    for (let i = 0; i < 24; i++) { const t = ang + i * Math.PI / 12; if (Math.cos(t) <= 0) continue;
       const yy = yc + KNOB_D / 2 * Math.sin(t) * .96; ctx.beginPath(); ctx.moveTo(X(x0 + 1.2), Y(yy)); ctx.lineTo(X(x0 + KNOB_T - 1.2), Y(yy)); ctx.stroke(); }
     ctx.globalAlpha = 1; ctx.lineWidth = lw;
     // handle peg + dot
-    const th = ang * sx, front = Math.cos(th) > 0, yh = yc + HANDLE_R * Math.sin(th), hx0 = sx > 0 ? x0 + KNOB_T : x0 - 8.5;
+    const th = ang, front = Math.cos(th) > 0, yh = yc + HANDLE_R * Math.sin(th), hx0 = sx > 0 ? x0 + KNOB_T : x0 - 8.5;
     ctx.setLineDash(front ? [] : [3, 3]); ctx.globalAlpha = front ? 1 : .45;
     rrect(ctx, X(hx0), Y(yh - 4.2), 8.5 * k, 8.4 * k, 4 * k); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
     const td = th - Math.PI / 2; if (Math.cos(td) > 0) { ctx.fillStyle = acc; ctx.beginPath(); ctx.arc(X(sx > 0 ? x0 + KNOB_T + .4 : x0 - .4), Y(yc + 13 * Math.sin(td)), 1.6 * k, 0, 7); ctx.fill(); }
@@ -232,7 +261,7 @@ function buildStrip() {
   stripBase = document.createElement('canvas'); stripBase.width = strip.width; stripBase.height = strip.height;
   const g = stripBase.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
   g.fillStyle = '#ffffff'; g.fillRect(0, 0, w, h); g.fillStyle = '#efefef'; g.fillRect(0, 0, w, LEAD * sk); g.fillRect(0, h - LEAD * sk, w, LEAD * sk);
-  if (segs.length) paperTo(g, 0, 0, w, 0, total(N), sk);
+  if (segs.length) paperTo(g, 0, 0, w, 0, total(N), sk); else drawTexts(g, 0, 0, 0, total(N), sk, w);
   g.strokeStyle = 'rgba(47,127,209,.9)'; g.lineWidth = 1; g.font = '600 10px system-ui'; g.fillStyle = '#2f7fd1';
   for (let i = 0; i <= N; i++) { const y = (LEAD + i * SCENE) * sk; g.beginPath(); g.moveTo(0, y); g.lineTo(w, y); g.stroke(); if (i < N) { g.fillStyle = 'rgba(255,255,255,.8)'; g.fillRect(2, y + 2, 20, 12); g.fillStyle = '#2f7fd1'; g.fillText(String(i + 1), 4, y + 12); } }
   drawStripMarker();
@@ -246,6 +275,93 @@ function drawStripMarker() {
   const yTop = s * sk, yb = yTop + WIN_H * sk; if (yTop < box.scrollTop || yb > box.scrollTop + box.clientHeight) box.scrollTop = yTop - box.clientHeight / 2 + WIN_H * sk / 2;
 }
 strip.addEventListener('click', e => { const r = strip.getBoundingClientRect(); animateTo((e.clientY - r.top) / sk - WIN_H / 2); });
+
+// ================= WORDS EDITOR =================
+const sceneTop = i => LEAD + (i - 1) * SCENE;
+function setScene(i) { editScene = Math.max(1, Math.min(N, i)); sel = null; syncPanel(); s = sceneTop(editScene); clampS(); draw(); }
+function drawEdit() {
+  const r = cv.getBoundingClientRect(); ctx.clearRect(0, 0, r.width, r.height);
+  ek = Math.min((r.width - 40) / (PAPER_W + 30), (r.height - 50) / (SCENE + 12)); eox = (r.width - PAPER_W * ek) / 2; eoy = 30;
+  const top = sceneTop(editScene);
+  ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.18)'; ctx.shadowBlur = 12; ctx.fillStyle = '#fff'; ctx.fillRect(eox, eoy, PAPER_W * ek, SCENE * ek); ctx.restore();
+  if (segs.length) paperTo(ctx, eox, eoy, PAPER_W * ek, top, top + SCENE, ek); else { drawTexts(ctx, eox, eoy, top, top + SCENE, ek, PAPER_W * ek); }
+  // window + safe zone
+  ctx.strokeStyle = '#2f7fd1'; ctx.lineWidth = 1.2; ctx.setLineDash([5, 4]);
+  rrect(ctx, eox + 0.5 * ek, eoy, WIN_W * ek, SCENE * ek, WIN_R * ek); ctx.stroke();
+  ctx.strokeStyle = '#2fae6b'; ctx.strokeRect(eox + (0.5 + SAFE) * ek, eoy + SAFE * ek, (WIN_W - 2 * SAFE) * ek, (SCENE - 2 * SAFE) * ek); ctx.setLineDash([]);
+  // boxes
+  for (const t of texts) { if (t.scene !== editScene) continue; const b = textBox(t), on = t === sel;
+    const out = b.x < 0.5 + SAFE || b.y < SAFE || b.x + b.w > WIN_W + 0.5 - SAFE || b.y + b.h > SCENE - SAFE;
+    ctx.strokeStyle = out ? '#c8322b' : (on ? (css('--accent') || '#e0761e') : 'rgba(0,0,0,.25)'); ctx.lineWidth = on ? 2 : 1; ctx.setLineDash(on ? [] : [3, 3]);
+    ctx.strokeRect(eox + b.x * ek, eoy + b.y * ek, b.w * ek, Math.max(b.h, 4) * ek); ctx.setLineDash([]);
+    if (on) { ctx.fillStyle = css('--accent') || '#e0761e'; ctx.fillRect(eox + (b.x + b.w) * ek - 5, eoy + (b.y + b.h / 2) * ek - 9, 10, 18); }
+  }
+  ctx.fillStyle = css('--muted') || '#888'; ctx.font = '600 13px system-ui'; ctx.textAlign = 'left';
+  ctx.fillText(`Scene ${editScene} · drag words to place · orange handle = width · red box = outside safe zone`, 16, 18);
+  $('counter').textContent = `Scene ${editScene} / ${N}`;
+}
+function toMm(e) { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left - eox) / ek, y: (e.clientY - r.top - eoy) / ek }; }
+function edDown(e) {
+  const p = toMm(e); cv.setPointerCapture(e.pointerId);
+  const mine = texts.filter(t => t.scene === editScene).reverse();
+  for (const t of mine) { const b = textBox(t);
+    if (Math.abs(p.x - (b.x + b.w)) < 8 / ek && p.y > b.y - 2 && p.y < b.y + b.h + 2 && t === sel) { edrag = { t, mode: 'w', x0: p.x, w0: t.w }; return; }
+    if (p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + Math.max(b.h, 4)) { sel = t; edrag = { t, mode: 'm', dx: p.x - t.x, dy: p.y - t.y }; syncPanel(); draw(); return; } }
+  sel = null; syncPanel(); draw();
+}
+function edMove(e) {
+  if (!edrag) return; const p = toMm(e), t = edrag.t;
+  if (edrag.mode === 'm') { t.x = Math.round((p.x - edrag.dx) * 2) / 2; t.y = Math.round((p.y - edrag.dy) * 2) / 2; }
+  else t.w = Math.max(15, Math.round((edrag.w0 + p.x - edrag.x0) * 2) / 2);
+  draw();
+}
+function addText() {
+  const last = sel || texts[texts.length - 1];
+  const t = { id: nextId++, scene: editScene, x: 0.5 + SAFE + 4, y: SAFE + 6, w: WIN_W - 2 * SAFE - 8, text: 'Type your words here',
+    font: last ? last.font : 'Nunito', size: last ? last.size : 16, color: last ? last.color : '#151515', align: last ? last.align : 'left', lh: last ? last.lh : 1.25, bold: last ? last.bold : true };
+  texts.push(t); sel = t; syncPanel(); buildStrip(); draw(); $('wText').focus(); $('wText').select();
+}
+function delSel() { texts = texts.filter(t => t !== sel); sel = null; syncPanel(); buildStrip(); draw(); }
+function syncPanel() {
+  const on = !!sel; document.querySelectorAll('#wControls [data-need]').forEach(el => el.disabled = !on);
+  if (!on) { $('wText').value = ''; return; }
+  $('wText').value = sel.text; $('wFont').value = sel.font; $('wSize').value = sel.size; $('wSizeN').value = sel.size;
+  $('wColor').value = sel.color; $('wLh').value = sel.lh; $('wBold').checked = sel.bold;
+  document.querySelectorAll('[data-align]').forEach(b => b.setAttribute('aria-pressed', b.dataset.align === sel.align));
+}
+function upd(f) { if (!sel) return; f(sel); draw(); clearTimeout(upd.t); upd.t = setTimeout(buildStrip, 250); }
+function refreshFonts() { const f = $('wFont'), v = f.value; f.replaceChildren(...fontList.map(x => { const o = document.createElement('option'); o.value = x.name; o.textContent = x.label; return o; })); if (v) f.value = v; }
+$('viewRoll').addEventListener('click', () => { view = 'roll'; radio('[data-view]', $('viewRoll')); $('wordsPanel').hidden = true; $('hintRoll').hidden = false; document.body.classList.remove('wordsmode'); s = sceneTop(editScene); clampS(); draw(); });
+$('viewWords').addEventListener('click', () => { view = 'words'; radio('[data-view]', $('viewWords')); $('wordsPanel').hidden = false; $('hintRoll').hidden = true; document.body.classList.add('wordsmode'); editScene = Math.max(1, Math.min(N, sceneAt())); syncPanel(); draw(); });
+$('wAdd').addEventListener('click', addText);
+$('wDel').addEventListener('click', delSel);
+$('wText').addEventListener('input', e => upd(t => t.text = e.target.value));
+$('wFont').addEventListener('change', e => upd(t => t.font = e.target.value));
+$('wSize').addEventListener('input', e => { $('wSizeN').value = e.target.value; upd(t => t.size = +e.target.value); });
+$('wSizeN').addEventListener('input', e => { const v = Math.max(6, Math.min(200, +e.target.value || 6)); $('wSize').value = v; upd(t => t.size = v); });
+$('wColor').addEventListener('input', e => upd(t => t.color = e.target.value));
+$('wLh').addEventListener('input', e => upd(t => t.lh = +e.target.value));
+$('wBold').addEventListener('change', e => upd(t => t.bold = e.target.checked));
+document.querySelectorAll('[data-align]').forEach(b => b.addEventListener('click', () => { upd(t => t.align = b.dataset.align); syncPanel(); }));
+$('wAll').addEventListener('click', () => { if (!sel) return; texts.forEach(t => { t.font = sel.font; t.size = sel.size; t.color = sel.color; t.lh = sel.lh; t.bold = sel.bold; t.align = sel.align; }); buildStrip(); draw(); });
+$('wFontFile').addEventListener('change', async e => {
+  for (const f of e.target.files) {
+    try { const name = f.name.replace(/\.(ttf|otf|woff2?)$/i, ''); const ff = new FontFace(name, await f.arrayBuffer()); await ff.load(); document.fonts.add(ff);
+      if (!fontList.some(x => x.name === name)) fontList.push({ name, label: name }); refreshFonts(); if (sel) { $('wFont').value = name; upd(t => t.font = name); } }
+    catch { alert(`Could not read the font ${f.name}`); }
+  }
+  e.target.value = '';
+});
+// save / load the words (a small file on the user's own device)
+function saveFile(name, blob) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+$('wSave').addEventListener('click', () => saveFile('scrolli_words.json', new Blob([JSON.stringify({ format: 'scrolli-words-1', scenes: N, units: 'mm, pt', fonts: fontList.map(f => f.name), texts }, null, 1)], { type: 'application/json' })));
+$('wLoad').addEventListener('change', async e => { const f = e.target.files[0]; if (!f) return; try { const d = JSON.parse(await f.text()); texts = d.texts || []; nextId = 1 + Math.max(0, ...texts.map(t => t.id || 0));
+    const missing = [...new Set(texts.map(t => t.font))].filter(n => !fontList.some(x => x.name === n)); if (missing.length) alert('Add these font files again: ' + missing.join(', '));
+    sel = null; syncPanel(); buildStrip(); draw(); } catch { alert('That file is not a Scrolli words file.'); } e.target.value = ''; });
+$('wPng').addEventListener('click', () => { const sc = 750 / (PAPER_W + 2 * BLEED), c = document.createElement('canvas'); c.width = Math.round(PAPER_W * sc); c.height = Math.round(total(N) * sc);
+  const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); paperTo(g, 0, 0, c.width, 0, total(N), sc); c.toBlob(b => saveFile('scrolli_preview_with_words.png', b), 'image/png'); });
+refreshFonts(); syncPanel();
+document.fonts.load('800 20px Nunito').then(() => document.fonts.load('400 20px Nunito')).then(() => { buildStrip(); draw(); });
 
 new ResizeObserver(resize).observe($('viewer'));
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);

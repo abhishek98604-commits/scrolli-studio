@@ -1,3 +1,5 @@
+@font-face{font-family:"Nunito";src:url("fonts/Nunito-400.woff") format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:"Nunito";src:url("fonts/Nunito-800.woff") format("woff");font-weight:800;font-display:swap}
 :root{
   --bg:#f4f1ea;--panel:#fffdf8;--ink:#1d1c1a;--muted:#6b665d;--line:#ddd6ca;--accent:#e0761e;--wire:#2a2a2a;--ok:#2c7a4b;--warn:#b7791f;--bad:#c8322b;
   --font:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -62,3 +64,23 @@ a{color:var(--accent)}
 .figure{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
 .figure svg{max-width:260px;width:100%;height:auto}
 .note{background:var(--panel);border-left:4px solid var(--accent);padding:10px 14px;border-radius:6px}
+
+.viewtabs{max-width:320px;margin:0 auto 10px}
+.wctl{display:grid;gap:10px}
+.wctl .lbl{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:600}
+.wctl .lbl.inline{display:flex;align-items:center;gap:8px}
+.wctl textarea,.wctl select,.wctl input[type=number]{font:15px var(--font);padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
+.wctl input[type=number]{width:70px}
+.wctl .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wctl .row input[type=range]{flex:1}
+.wctl .btn.full{width:100%}
+.wctl .btn[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.wctl .btn:disabled,.wctl textarea:disabled,.wctl select:disabled,.wctl input:disabled{opacity:.45}
+.btn.file{position:relative;overflow:hidden;text-align:center;cursor:pointer}
+.btn.file input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.btn.small{font-size:12px;padding:6px 10px}
+.btn.danger{color:var(--bad)}
+.wctl hr{border:0;border-top:1px solid var(--line);margin:4px 0}
+
+.wordsmode .panel:first-child .group:not(#wordsPanel){display:none}
+.wordsmode .panel:first-child #wordsPanel{margin-top:0;padding-top:0;border-top:0}

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="127.0mm" height="2656.0mm" viewBox="0 0 127.0 2656.0" font-family="Helvetica, Arial, sans-serif">
+<g id="ARTWORK" inkscape:groupmode="layer" inkscape:label="ARTWORK (your art here)"><rect width="127.0" height="2656.0" fill="#fff"/></g>
+<g id="GUIDES" inkscape:groupmode="layer" inkscape:label="GUIDES - hide before export">
+<rect x="0" y="0" width="127.0" height="2656.0" fill="none" stroke="#e8336d" stroke-width="0.3" stroke-dasharray="2 1"/>
+<rect x="3.0" y="3.0" width="121.0" height="2650.0" fill="none" stroke="#000" stroke-width="0.3"/>
+<rect x="3.0" y="3.0" width="121.0" height="125.0" fill="#f2f2f2"/><rect x="3.0" y="3.0" width="121.0" height="12.0" fill="#ffd9a0"/>
+<text x="63.5" y="10.4" font-size="4" text-anchor="middle" fill="#8a5300">GLUE STRIP 12 mm</text>
+<text x="63.5" y="61.5" font-size="5" text-anchor="middle" fill="#666">START · LEAD 125 mm · keep blank</text>
+<text x="63.5" y="68.5" font-size="3.6" text-anchor="middle" fill="#888">wraps the first dowel</text>
+<rect x="3.0" y="2528.0" width="121.0" height="125.0" fill="#f2f2f2"/><rect x="3.0" y="2641.0" width="121.0" height="12.0" fill="#ffd9a0"/>
+<text x="63.5" y="2648.4" font-size="4" text-anchor="middle" fill="#8a5300">GLUE STRIP 12 mm</text>
+<text x="63.5" y="2586.5" font-size="5" text-anchor="middle" fill="#666">END · LEAD 125 mm · keep blank</text>
+<text x="63.5" y="2593.5" font-size="3.6" text-anchor="middle" fill="#888">wraps the last dowel</text>
+<line x1="3.0" y1="128.0" x2="124.0" y2="128.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="128.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="136.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="134.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">01 TITLE</text>
+<line x1="3.0" y1="278.0" x2="124.0" y2="278.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="278.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="286.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="284.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">02 SCENE</text>
+<line x1="3.0" y1="428.0" x2="124.0" y2="428.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="428.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="436.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="434.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">03 SCENE</text>
+<line x1="3.0" y1="578.0" x2="124.0" y2="578.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="578.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="586.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="584.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">04 SCENE</text>
+<line x1="3.0" y1="728.0" x2="124.0" y2="728.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="728.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="736.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="734.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">05 SCENE</text>
+<line x1="3.0" y1="878.0" x2="124.0" y2="878.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="878.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="886.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="884.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">06 SCENE</text>
+<line x1="3.0" y1="1028.0" x2="124.0" y2="1028.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="1028.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="1036.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="1034.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">07 SCENE</text>
+<line x1="3.0" y1="1178.0" x2="124.0" y2="1178.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="1178.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="1186.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="1184.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">08 SCENE</text>
+<line x1="3.0" y1="1328.0" x2="124.0" y2="1328.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="1328.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="1336.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="1334.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">09 SCENE</text>
+<line x1="3.0" y1="1478.0" x2="124.0" y2="1478.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="1478.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="1486.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="1484.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">10 SCENE</text>
+<line x1="3.0" y1="1628.0" x2="124.0" y2="1628.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="1628.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="1636.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="1634.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">11 SCENE</text>
+<line x1="3.0" y1="1778.0" x2="124.0" y2="1778.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="1778.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="1786.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="1784.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">12 SCENE</text>
+<line x1="3.0" y1="1928.0" x2="124.0" y2="1928.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="1928.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="1936.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="1934.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">13 SCENE</text>
+<line x1="3.0" y1="2078.0" x2="124.0" y2="2078.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="2078.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="2086.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="2084.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">14 SCENE</text>
+<line x1="3.0" y1="2228.0" x2="124.0" y2="2228.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="2228.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="2236.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="2234.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">15 SCENE</text>
+<line x1="3.0" y1="2378.0" x2="124.0" y2="2378.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<rect x="3.5" y="2378.0" width="120.0" height="150.0" rx="8.0" fill="none" stroke="#2f7fd1" stroke-width="0.25" stroke-dasharray="1.5 1"/>
+<rect x="11.5" y="2386.0" width="104.0" height="134.0" fill="none" stroke="#2fae6b" stroke-width="0.25"/>
+<text x="6.0" y="2384.0" font-size="4.5" font-weight="bold" fill="#2f7fd1">16 END + CREDITS</text>
+<line x1="3.0" y1="2528.0" x2="124.0" y2="2528.0" stroke="#2f7fd1" stroke-width="0.4"/>
+<text x="63.5" y="275.0" font-size="3" text-anchor="middle" fill="#2fae6b">green = safe zone (104 x 134 mm) · blue dashed = window · pink = 3 mm bleed</text>
+</g></svg>

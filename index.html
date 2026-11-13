@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Privacy: this page may not send anything anywhere. Files you pick stay in this browser tab. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'none'; form-action 'none'; font-src 'self' blob: data:">
 <title>Scrolli Studio — scroll tester</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -45,6 +45,24 @@
         <h2>3 · File check</h2>
         <ul class="checks" id="checkList"></ul>
       </div>
+      <div class="group" id="wordsPanel" hidden>
+        <h2>4 · Words</h2>
+        <div id="wControls" class="wctl">
+          <button type="button" class="btn full" id="wAdd">+ Add words to this scene</button>
+          <label class="lbl">Text<textarea id="wText" rows="3" data-need placeholder="Select or add a text box"></textarea></label>
+          <label class="lbl">Font<select id="wFont" data-need></select></label>
+          <label class="btn file small">Add your font file (.ttf .otf .woff)<input type="file" id="wFontFile" accept=".ttf,.otf,.woff,.woff2" multiple></label>
+          <label class="lbl">Size <span class="row"><input type="range" id="wSize" min="6" max="120" step="1" data-need><input type="number" id="wSizeN" min="6" max="200" data-need> pt</span></label>
+          <label class="lbl">Line spacing<input type="range" id="wLh" min="0.8" max="2" step="0.05" data-need></label>
+          <div class="row"><label class="lbl inline">Colour <input type="color" id="wColor" data-need></label><label class="tog"><input type="checkbox" id="wBold" data-need> Bold</label></div>
+          <div class="row align" role="group" aria-label="Align"><button type="button" class="btn" data-align="left" data-need>Left</button><button type="button" class="btn" data-align="center" data-need>Centre</button><button type="button" class="btn" data-align="right" data-need>Right</button></div>
+          <div class="row"><button type="button" class="btn" id="wAll" data-need>Use this style for all words</button><button type="button" class="btn danger" id="wDel" data-need>Delete</button></div>
+          <hr>
+          <div class="row"><button type="button" class="btn" id="wSave">Save words file</button><label class="btn file">Open words file<input type="file" id="wLoad" accept=".json"></label></div>
+          <button type="button" class="btn full" id="wPng">Download preview PNG with words</button>
+          <p class="small">Words and fonts stay on this device. Save the words file to keep your work (and send it to us with your font files for print).</p>
+        </div>
+      </div>
       <div class="group">
         <h2>View</h2>
         <label class="tog"><input type="checkbox" id="guides"> Show scene lines &amp; safe zone</label>
@@ -53,6 +71,10 @@
     </aside>
 
     <section class="stage" aria-label="Scroll viewer">
+      <div class="seg viewtabs" role="radiogroup" aria-label="View">
+        <button type="button" role="radio" aria-checked="true" data-view="roll" id="viewRoll">Roll it</button>
+        <button type="button" role="radio" aria-checked="false" data-view="words" id="viewWords">Add words</button>
+      </div>
       <div class="viewer" id="viewer">
         <canvas id="cv" aria-label="Scrolli box wireframe with your scroll in the window"></canvas>
       </div>
@@ -61,7 +83,7 @@
         <span class="counter" id="counter" aria-live="polite">Scene – / 16</span>
         <button type="button" class="btn" id="next" aria-label="Next scene">Next ▼</button>
       </div>
-      <p class="hint">Drag the paper or a dial · mouse wheel · ↑ ↓ keys</p>
+      <p class="hint" id="hintRoll">Drag the paper or a dial · mouse wheel · ↑ ↓ keys</p>
     </section>
 
     <aside class="panel flat" aria-label="Whole scroll">
